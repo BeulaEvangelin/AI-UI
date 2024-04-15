@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Valentine Vault - your valentine card prompts await</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Honk&family=Pixelify+Sans:wght@400..700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/6.5.0/browser/pixi.js"></script>
+    <script type="module">
+      import { TextBox, CopyButton, SliderBox } from "./customClasses.js";
+
+      window.addEventListener("DOMContentLoaded", () => {
+        // 3 rows of images
+        const app = new PIXI.Application({
+          backgroundColor: 0xe7122f,
+          resizeTo: window,
+        });
+        //cb2424, 610011, e7122f
+        document.getElementById("app").appendChild(app.view);
+
+        const imageTextures1 = [];
+        const imageNames1 = [
+          "valentines day card minecraft style",
+          "valentines day card popart style",
+          "valentines day card disneypixar style",
+          "valentines day card manga style",
+          "valentines day card doodle art style",
+          "valentines day card psychedelic style",
+        ];
+
+        const loader1 = PIXI.Loader.shared;
+        loader1.add(
+          "valentines day card minecraft style",
+          "assets/minecraft.png"
+        );
+        loader1.add("valentines day card popart style", "assets/popart.png");
+        loader1.add(
+          "valentines day card disneypixar style",
+          "assets/disneypixar.png"
+        );
+        loader1.add("valentines day card manga style", "assets/manga.png");
+        loader1.add(
+          "valentines day card doodle art style",
+          "assets/doodle.png"
+        );
+        loader1.add(
+          "valentines day card psychedelic style",
+          "assets/psychedelic.png"
+        );
+        loader1.load((loader, resources) => {
+          for (let i = 0; i < imageNames1.length; i++) {
+            const texture = resources[imageNames1[i]].texture;
+            imageTextures1.push(texture);
+          }
+          createImageSprites(imageTextures1, imageNames1, 100);
+          createSecondSet();
+        });
+
+        function createSecondSet() {
+          const imageTextures2 = [];
+          const imageNames2 = [
+            "a guy",
+            "a girl",
+            "a bear",
+            "a chick",
+            "a cat",
+            "a dog",
+          ];
+
+          const loader2 = PIXI.Loader.shared;
+          loader2.add("a guy", "assets/guy.png");
+          loader2.add("a girl", "assets/girl.png");
+          loader2.add("a bear", "assets/bear.png");
+          loader2.add("a chick", "assets/chick.png");
+          loader2.add("a cat", "assets/cat.png");
+          loader2.add("a dog", "assets/dog.png");
+          loader2.load((loader2, resources) => {
+            for (let i = 0; i < imageNames2.length; i++) {
+              const texture = resources[imageNames2[i]].texture;
+              imageTextures2.push(texture);
+            }
+            createImageSprites(imageTextures2, imageNames2, 300);
+
+            createThirdSet();
+          });
+        }
+
+        function createThirdSet() {
+          const imageTextures3 = [];
+          const imageNames3 = [
+            "at a coffee shop",
+            "at an amusement park",
+            "under a sakura tree",
+            "with pink hearts background",
+            "at a beach sunset",
+            "at a dinner date",
+          ];
+
+          const loader3 = PIXI.Loader.shared;
+          loader3.add("at a coffee shop", "assets/at a coffee shop.png");
+          loader3.add(
+            "at an amusement park",
+            "assets/at an amusement park.png"
+          );
+          loader3.add("under a sakura tree", "assets/under a sakura tree.png");
+          loader3.add(
+            "with pink hearts background",
+            "assets/with pink hearts background.png"
+          );
+          loader3.add("at a beach sunset", "assets/at a beach sunset.png");
+          loader3.add("at a dinner date", "assets/at a dinner date.png");
+          loader3.load((loader3, resources) => {
+            for (let i = 0; i < imageNames3.length; i++) {
+              const texture = resources[imageNames3[i]].texture;
+              imageTextures3.push(texture);
+            }
+            createImageSprites(imageTextures3, imageNames3, 500);
+          });
+        }
+
+        function createImageSprites(imageTextures, imageNames, offsetY) {
+          const offsetX = 450;
+          const spacing = 150;
+          const scale = 0.19;
+
+          const imageContainer = new PIXI.Container();
+          app.stage.addChild(imageContainer);
+
+          for (let i = 0; i < imageTextures.length; i++) {
+            const imageSprite = new PIXI.Sprite(imageTextures[i]);
+            imageSprite.scale.set(scale);
+            imageSprite.x = offsetX + i * (imageSprite.width * scale + spacing);
+            imageSprite.y = offsetY;
+            imageSprite.interactive = true;
+            imageSprite.buttonMode = true;
+            imageSprite.on("pointerdown", () => {
+              textBox.setText(textBox.getText() + " " + imageNames[i]);
+            });
+            imageContainer.addChild(imageSprite);
+          }
+        }
+        //title, textbox, copybutton and sllider----------------------------------------------------------------------------------------
+        //NOTE: !!!! Reload if the correct fonts are not visible the first time after going live
+        const title = new PIXI.Text("VALENTINE VAULT");
+        title.style = new PIXI.TextStyle({
+          fontFamily: "Honk",
+          fontSize: 48,
+          fill: 0xffffff,
+          align: "center",
+        });
+        title.x = 40;
+        title.y = 30;
+        app.stage.addChild(title);
+
+        const catchPhrase = new PIXI.Text("your valentine card prompts await");
+        catchPhrase.style = new PIXI.TextStyle({
+          fontFamily: "Pixelify Sans",
+          fontSize: 20,
+          fill: 0xffffff,
+          align: "center",
+        });
+        catchPhrase.x = 42;
+        catchPhrase.y = 75;
+        app.stage.addChild(catchPhrase);
+
+        const bg = new PIXI.Text("SELECT CUTENESS LEVEL");
+        bg.style = new PIXI.TextStyle({
+          fontFamily: "Pixelify Sans",
+          fontSize: 20,
+          fill: 0xfed053,
+          align: "center",
+        });
+        bg.x = 220;
+        bg.y = 135;
+        app.stage.addChild(bg);
+
+        const category1 = new PIXI.Text("THEMES (Select 1)");
+        category1.style = new PIXI.TextStyle({
+          fontFamily: "Honk",
+          fontSize: 28,
+          fill: 0xffffff,
+          align: "center",
+        });
+        category1.x = 90;
+        category1.y = 190;
+        app.stage.addChild(category1);
+
+        const category2 = new PIXI.Text("CHARACTERS (Select 2)");
+        category2.style = new PIXI.TextStyle({
+          fontFamily: "Honk",
+          fontSize: 28,
+          fill: 0xffffff,
+          align: "center",
+        });
+        category2.x = 90;
+        category2.y = 390;
+        app.stage.addChild(category2);
+
+        const category3 = new PIXI.Text("ENVIRONMENT (Select 1)");
+        category3.style = new PIXI.TextStyle({
+          fontFamily: "Honk",
+          fontSize: 28,
+          fill: 0xffffff,
+          align: "center",
+        });
+        category3.x = 90;
+        category3.y = 590;
+        app.stage.addChild(category3);
+
+        const textBox = new TextBox(app, 460, 50, 900, 30);
+        const copyButton = new CopyButton(app, 1390, 55, textBox);
+        const sliderBox = new SliderBox(app, 10, 140, 0, 100, 50, textBox); //NOTE: Click on the slider itself and not the handle to change cuteness level :(
+      });
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
